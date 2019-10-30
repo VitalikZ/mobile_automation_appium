@@ -58,14 +58,14 @@ public class FirstTest {
 
     @Test
     public void testCancelSearch() {
-        waitForElementPresentById(
+        waitForElementByIdAndClick(
                 "org.wikipedia:id/search_container",
                 "Can't find 'Search Wikipedia' input",
                 5);
 
         waitForElementByIdAndClick(
                 "org.wikipedia:id/search_close_btn",
-                "Can't find X do cancel search",
+                "Can't find 'X' to cancel search",
                 5);
 
         waitForElementNotPresent(
@@ -108,8 +108,14 @@ public class FirstTest {
     }
 
     private WebElement waitForElementByIdAndClick(String id, String error_message, long timeoutInSeconds) {
-        WebElement element = waitForElementPresentByXpath(id, error_message, timeoutInSeconds);
+        WebElement element = waitForElementPresentById(id, error_message, timeoutInSeconds);
         element.click();
+        return element;
+    }
+
+    private WebElement waitForElementByIdAndSendKeys(String id, String value, String error_message, long timeoutInSeconds) {
+        WebElement element = waitForElementPresentById(id, error_message, timeoutInSeconds);
+        element.sendKeys(value);
         return element;
     }
 
