@@ -134,6 +134,36 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testCheckTheTextInSearchInput() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                5);
+
+        WebElement element = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search input is not appeared",
+                15);
+
+        String textOfElement = element.getAttribute("text");
+        Assert.assertTrue("Element's text is not as expected!", textOfElement.equals("Search…"));
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5);
+
+        WebElement secondElement = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search input is not appeared",
+                15);
+
+        String textOfElement2 = secondElement.getAttribute("text");
+        Assert.assertTrue("Element's text is not as expected!", textOfElement2.equals("Java"));
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds){
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -166,6 +196,12 @@ public class FirstTest {
     private WebElement waitForElementAndClear(By by, String error_message, long timeOutInSeconds){
         WebElement element = waitForElementPresent(by,error_message, timeOutInSeconds);
         element.clear();
+        return element;
+    }
+
+    private WebElement checkInputBeforeSearch(WebElement element, String textOfElement) {
+        textOfElement = element.getAttribute("text");
+        Assert.assertTrue("Element's text is not as expected!", textOfElement.equals("Search…"));
         return element;
     }
 }
