@@ -51,8 +51,7 @@ public class FirstTest {
         waitForElementPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
                 "Cannot find 'Object-oriented programming language'",
-                15
-        );
+                15);
 
         //Thread.sleep(10000);
     }
@@ -103,7 +102,6 @@ public class FirstTest {
                 By.id("org.wikipedia:id/search_close_btn"),
                 "Element X is still present",
                 5);
-
     }
 
     @Test
@@ -162,6 +160,35 @@ public class FirstTest {
 
         String textOfElement2 = secondElement.getAttribute("text");
         Assert.assertTrue("Element's text is not as expected!", textOfElement2.equals("Java"));
+    }
+
+    @Test
+    public void testCancelSearchAndCheckArticleIsAbsent() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                5);
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5);
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Cannot find list of search results",
+                15);
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Can't find 'X' to cancel search",
+                5);
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Element X is still present",
+                5);
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds){
