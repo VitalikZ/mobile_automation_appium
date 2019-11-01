@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -180,15 +181,7 @@ public class FirstTest {
                 "Cannot find list of search results",
                 15);
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Can't find 'X' to cancel search",
-                5);
-
-        waitForElementNotPresent(
-                By.id("org.wikipedia:id/search_results_list"),
-                "Element X is still present",
-                5);
+        Assert.assertTrue(foundArticlesOnSearchResultPage("Java"));
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds){
@@ -230,5 +223,16 @@ public class FirstTest {
         textOfElement = element.getAttribute("text");
         Assert.assertTrue("Element's text is not as expected!", textOfElement.equals("Search…"));
         return element;
+    }
+
+    public boolean foundArticlesOnSearchResultPage(String searchQuery)
+    {
+        List<WebElement> articles = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+        for (WebElement article : articles)
+        {
+            if (article.getText().trim().equals(searchQuery))
+                return true;
+        }
+        return false;
     }
 }
