@@ -28,9 +28,11 @@ public class FirstTest {
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
-        capabilities.setCapability("app", "/Users/vitaliizakorchevnyy/Desktop/JavaAppiumAuto/apks/org.wikipedia.apk");
+        capabilities.setCapability("app", "/Users/vitaliizak/Desktop/JavaAppiumAuto/apks/org.wikipedia.apk");
+
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver.resetApp();
     }
 
     @After
@@ -238,13 +240,6 @@ public class FirstTest {
                 "Can't find article title",
                 15);
 
-        //////////////////////////////////////
-//        waitForElementAndClick(
-//                By.xpath("//android.widget.ImageButton[@*='Navigate up']"),
-//                //By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']']"),
-//                "Can't close article, can't find X button",
-//                8);
-
         waitForElementAndClick(
                 By.xpath("//android.widget.ImageView[@content-desc='More options']"),
                 "Can't find button to open article options",
@@ -279,7 +274,7 @@ public class FirstTest {
         waitForElementAndClick(
                 By.xpath("//android.widget.ImageButton[@*='Navigate up']"),
                 "Can't close article, can't find X button",
-                8);
+                5);
 
         waitForElementAndClick(
                 By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
@@ -287,7 +282,7 @@ public class FirstTest {
                 5);
 
         waitForElementAndClick(
-                By.xpath("//*[@text='Learning programming']"),
+                By.xpath("//*[@text='Learning programing']"),
                 "Can't find created folder",
                 5);
 
