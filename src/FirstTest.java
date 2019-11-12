@@ -260,9 +260,11 @@ public class FirstTest {
                 "Can't find input to set name of article folder",
                 5);
 
+        String name_of_folder = "Learning programing";
+
         waitForElementAndSendKeys(
                 By.id("org.wikipedia:id/text_input"),
-                "Learning programing",
+                name_of_folder,
                 "Can't put text into article folder input'",
                 5);
 
@@ -282,7 +284,7 @@ public class FirstTest {
                 5);
 
         waitForElementAndClick(
-                By.xpath("//*[@text='Learning programing']"),
+                By.xpath("//*[@text='" + name_of_folder + "']"),
                 "Can't find created folder",
                 5);
 
@@ -294,6 +296,58 @@ public class FirstTest {
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Can't delete saved article",
                 5);
+    }
+
+    @Test
+    public void testAmountOfNotEmptySearch(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                5);
+
+        String search_line = "Linkin Park discography";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find search input",
+                5);
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        waitForElementPresent(
+                By.xpath(search_result_locator),
+                "Can't find anything by request " + search_line,
+                15);
+
+        int amount_of_search_results = getAmountOfELements(By.xpath(search_result_locator));
+
+        Assert.assertTrue("We found more result than one!", amount_of_search_results > 0);
+    }
+
+    @Test
+    public void testAmountForEmptySearch(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                5);
+
+        String search_line = "asdfghjkl12345678";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find search input",
+                5);
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        String emty_result_label = "//*[@text='No results found']";
+
+        waitForElementPresent(
+                By.xpath(emty_result_label),
+                "Can't find empty result label by request - " + search_line,
+                15);
+        assertElementNotPresent(
+                By.xpath(search_result_locator),
+                "We've found some results by request " + search_line);
+
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds){
@@ -395,6 +449,18 @@ public class FirstTest {
                 .moveTo(left_x, middle_y)
                 .release()
                 .perform();
+    }
 
+    private int getAmountOfELements(By by){
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
+
+    private void assertElementNotPresent(By by, String error_message){
+        int amount_of_elements = getAmountOfELements(by);
+        if (amount_of_elements > 0){
+            String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
     }
 }
