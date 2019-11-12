@@ -560,6 +560,23 @@ public class FirstTest {
         Assert.assertEquals("We see unexpected title", titleOnArticlePage, titleInReadingList);
     }
 
+    @Test
+    public void testAssertTitle(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                5);
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "2342342342342342wefsdfsdfsdf",
+                "Cannot find search input",
+                5);
+
+        assertElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Title of article doesn't appeared");
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeOutInSeconds){
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -670,6 +687,14 @@ public class FirstTest {
         int amount_of_elements = getAmountOfELements(by);
         if (amount_of_elements > 0){
             String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
+    }
+
+    private void assertElementPresent(By by, String error_message){
+        int amount_of_elements = getAmountOfELements(by);
+        if (amount_of_elements != 0){
+            String default_message = "An element '" + by.toString() + "' supposed to be present =)";
             throw new AssertionError(default_message + " " + error_message);
         }
     }
