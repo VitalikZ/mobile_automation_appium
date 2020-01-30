@@ -93,7 +93,7 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.foundArticlesOnSearchResultPage("Java");
         ArticlePageObject.waitForTitleElement();
-        MainPageObject.swipeToElementByXpath("//*[@text='View page in browser1']");
+        MainPageObject.swipeToElement("//*[@text='View page in browser1']");
 
     }
 }
